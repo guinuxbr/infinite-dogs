@@ -1,4 +1,4 @@
-# Infinite Dogs
+# Infinite Dogs 🐶
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/guinuxbr/infinite-dogs)
 ![GitHub contributors](https://img.shields.io/github/contributors/guinuxbr/infinite-dogs)
