@@ -7,7 +7,7 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/9d46e7df-0fb8-4ccd-b8b6-824ddfa3fc7b/deploy-status)](https://app.netlify.com/sites/infinitedogs/deploys)
 ![Twitter Follow](https://img.shields.io/twitter/follow/guinuxbr?style=social)
 
-This is a simple JavaScript app that uses the [Dog API](https://api.chucknorris.io/) to fetch a random Dog images.
+This is a simple JavaScript app that uses the [Dog API](https://api.chucknorris.io/) to fetch random Dog images.
 
 ## Screenshot
 ![screenshot](./screenshot.png)
