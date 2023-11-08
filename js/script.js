@@ -7,7 +7,7 @@ let totalImages = 0;
 let photosArray = [];
 
 // Dog API
-let imagesToLoad = 15; // For performance reasons, just load 15 images
+let imagesToLoad = 15; // For performance reasons, just load 10 images
 const apiURL = `https://dog.ceo/api/breeds/image/random/${imagesToLoad}`;
 
 // Check all images were loaded
@@ -16,7 +16,7 @@ function imageLoaded() {
     if (imagesLoaded === totalImages) {
         ready = true;
         loader.hidden = true;
-        imagesToLoad = 15; // Once the first 5 messages were loaded and the scroll is at the bottom, load 15 more images
+        imagesToLoad = 15; // Once the first 10 messages were loaded and the scroll is at the bottom, load 10 more images
     }
 }
 
