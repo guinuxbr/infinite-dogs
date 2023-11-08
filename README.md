@@ -6,7 +6,7 @@
 ![GitHub forks](https://img.shields.io/github/forks/guinuxbr/infinite-dogs)
 ![Twitter Follow](https://img.shields.io/twitter/follow/guinuxbr?style=social)
 
-This is a simple JavaScript app that uses the [Dog API](https://api.chucknorris.io/) to fetch random Dog images.
+This is a simple JavaScript app that uses the [Dog API](https://dog.ceo/dog-api/) to fetch random Dog images.
 
 ## Screenshot
 
@@ -38,8 +38,8 @@ Alternatively, see the GitHub documentation on [creating a pull request](https:/
 
 ## Contact
 
-If you want to contact me you can send an email to guinuxbr@gmail.com.
+If you want to contact me you can email <guinuxbr@gmail.com>.
 
-## License
+## Licence
 
-This project uses the following license: [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.html).
+This project uses the following licence: [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.html).
