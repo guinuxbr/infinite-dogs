@@ -20,7 +20,7 @@ There are no prerequisites. Just browse the URL and have some fun!
 
 Just browse to: <https://infinitedogs.guinuxbr.com>
 
-## Contributing to Chuck's Jokes
+## Contributing to Infinite Dogs
 
 To contribute to infinite-dogs, follow these steps:
 
