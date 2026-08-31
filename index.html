@@ -1,54 +1,377 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="system">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infinite Dogs</title>
+    <title>Infinite Dogs - Endless Dog Pictures & Breed Explorer</title>
+    <meta name="description" content="Discover, search, explore, and save endless adorable dog pictures with breed filtering, full-screen lightbox, favorites manager, and dark mode. Powered by Dog API.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://infinitedogs.guinuxbr.com/">
+    <meta property="og:title" content="Infinite Dogs - Endless Dog Pictures & Breed Explorer">
+    <meta property="og:description" content="Discover, search, explore, and save endless adorable dog pictures with breed filtering, full-screen lightbox, favorites manager, and dark mode.">
+    <meta property="og:image" content="screenshot.png">
+
+    <!-- X (Twitter) Cards -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://infinitedogs.guinuxbr.com/">
+    <meta property="twitter:title" content="Infinite Dogs - Endless Dog Pictures & Breed Explorer">
+    <meta property="twitter:description" content="Discover, search, explore, and save endless adorable dog pictures with breed filtering, full-screen lightbox, favorites manager, and dark mode.">
+    <meta property="twitter:image" content="screenshot.png">
+
+    <!-- Favicon & PWA -->
     <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css" />
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#173f4f">
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-    <!-- Header -->
-    <nav class="header">
-        <div class="header-container">
-            <ul class="ul-container">
-                <li>
-                    <a href="https://github.com/guinuxbr/" target="_blank"><i class="fab fa-github"></i></a>
-                </li>
-                <li>
-                    <a href="https://twitter.com/guinuxbr" target="_blank"><i class="fab fa-twitter"></i></a>
-                </li>
-                <li>
-                    <a href="https://www.linkedin.com/in/gllmarques/" target="_blank"><i
-                            class="fab fa-linkedin-in"></i></a>
-                </li>
-                <li>
-                    <a href="https://www.instagram.com/guinuxbr" target="_blank"><i
-                            class="fab fa-instagram"></i></a><br>
-                </li>
-            </ul>
-            <div class="title-container">
-                <h1><a href="/">Infinite Dogs </a><i class="fas fa-dog"></i></h1>
-                <h2>Just an infinite list of buddies.</h2>
-                <h3>Powered by<a href="https://dog.ceo/dog-api/" target="_blank"> Dog API </a>
-                </h3>
+    <div class="wrapper">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-container">
+                <a href="./" class="brand" aria-label="Infinite Dogs Home">
+                    <img class="img-header" src="favicon.png" alt="Infinite Dogs logo" width="48" height="48">
+                    <span class="brand-title">Infinite Dogs</span>
+                </a>
+
+                <nav class="header-nav" aria-label="Header Tools">
+                    <button id="btn-theme-toggle" class="btn-header-icon" title="Toggle Light/Dark Theme (T)" aria-label="Toggle theme">
+                        <i class="fa-solid fa-moon" id="icon-theme"></i>
+                    </button>
+                    <button id="btn-favorites-toggle" class="btn-header-icon" title="View Saved Favorites (F)" aria-label="View Saved Favorites">
+                        <i class="fa-solid fa-bookmark"></i>
+                        <span id="favorites-badge" class="badge-count" style="display: none;">0</span>
+                    </button>
+                    <button id="btn-shortcuts-toggle" class="btn-header-icon" title="Keyboard Shortcuts (?)" aria-label="Keyboard Shortcuts">
+                        <i class="fa-solid fa-keyboard"></i>
+                    </button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Hero & Controls Deck -->
+                <section class="controls-deck" aria-label="Dog Search and Controls">
+                    <div class="deck-header">
+                        <div class="deck-title-group">
+                            <h1 class="deck-title"><i class="fa-solid fa-dog"></i> Endless Dog Gallery</h1>
+                            <p class="deck-subtitle">Explore pure joy from an infinite collection of good boys and girls.</p>
+                        </div>
+                    </div>
+
+                    <form id="form-controls" class="controls-form" onsubmit="return false;">
+                        <div class="control-row">
+                            <!-- Breed Dropdown Selection -->
+                            <div class="control-item">
+                                <label for="select-breed" class="control-label">
+                                    <i class="fa-solid fa-paw"></i> Select Breed:
+                                </label>
+                                <select id="select-breed" class="custom-select" aria-label="Select dog breed">
+                                    <option value="">🎲 All Breeds (Random)</option>
+                                </select>
+                            </div>
+
+                            <!-- Search Filter by Breed Input -->
+                            <div class="control-item control-item-search">
+                                <label for="input-search" class="control-label">
+                                    <i class="fa-solid fa-magnifying-glass"></i> Filter Breeds:
+                                </label>
+                                <div class="search-input-box">
+                                    <input type="text" id="input-search" placeholder="Type breed (e.g. golden, husky, corgi, pug)..." autocomplete="off" aria-label="Filter dog breeds by keyword">
+                                    <button type="button" id="btn-clear" class="btn-clear-input" title="Clear filter (Esc)" aria-label="Clear breed search">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Popular Quick Breed Tags -->
+                        <div class="quick-tags-container">
+                            <span class="quick-tags-label"><i class="fa-solid fa-fire"></i> Popular:</span>
+                            <div class="quick-tags-list" id="quick-tags-list">
+                                <button type="button" class="tag-pill active" data-breed="">🎲 All</button>
+                                <button type="button" class="tag-pill" data-breed="retriever-golden">Golden Retriever</button>
+                                <button type="button" class="tag-pill" data-breed="husky">Husky</button>
+                                <button type="button" class="tag-pill" data-breed="corgi-cardigan">Corgi</button>
+                                <button type="button" class="tag-pill" data-breed="labrador">Labrador</button>
+                                <button type="button" class="tag-pill" data-breed="pug">Pug</button>
+                                <button type="button" class="tag-pill" data-breed="beagle">Beagle</button>
+                                <button type="button" class="tag-pill" data-breed="germanshepherd">German Shepherd</button>
+                                <button type="button" class="tag-pill" data-breed="samoyed">Samoyed</button>
+                            </div>
+                        </div>
+
+                        <!-- Buttons & Settings Row -->
+                        <div class="buttons-row">
+                            <div class="actions-left">
+                                <button type="button" id="btn-fetch-more" class="btn-primary" title="Fetch more dogs (Space or N)">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                    <span id="btn-fetch-text">Fetch More Dogs</span>
+                                </button>
+                                <button type="button" id="btn-refresh" class="btn-secondary" title="Clear and load fresh dogs" aria-label="Refresh dog gallery">
+                                    <i class="fa-solid fa-arrows-rotate"></i>
+                                    <span>Fresh Batch</span>
+                                </button>
+                            </div>
+
+                            <div class="actions-right">
+                                <!-- Infinite Scroll Toggle -->
+                                <label class="toggle-control" title="Toggle automatic loading when scrolling down">
+                                    <input type="checkbox" id="toggle-infinite" checked>
+                                    <span class="toggle-track"></span>
+                                    <span class="toggle-label"><i class="fa-solid fa-angles-down"></i> Infinite Scroll</span>
+                                </label>
+
+                                <!-- Column Layout Switcher -->
+                                <div class="layout-switcher" role="group" aria-label="Grid layout columns">
+                                    <button type="button" class="btn-layout" data-cols="2" title="2 Columns" aria-label="2 Columns">
+                                        <i class="fa-solid fa-table-columns"></i>
+                                    </button>
+                                    <button type="button" class="btn-layout active" data-cols="4" title="4 Columns (Masonry)" aria-label="4 Columns">
+                                        <i class="fa-solid fa-table-cells"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Gallery Stats & Status Message -->
+                    <div class="deck-status-bar">
+                        <div id="gallery-stats" class="gallery-stats">
+                            <span class="stat-badge"><i class="fa-solid fa-images"></i> <strong id="stat-count">0</strong> loaded</span>
+                            <span id="active-filter-badge" class="stat-badge stat-filter" style="display: none;">
+                                <i class="fa-solid fa-filter"></i> Filter: <strong id="filter-name">All</strong>
+                                <button type="button" id="btn-reset-filter" class="btn-stat-reset" title="Reset filter" aria-label="Reset breed filter"><i class="fa-solid fa-xmark"></i></button>
+                            </span>
+                        </div>
+                        <div id="status-message" class="status-message" role="status" aria-live="polite"></div>
+                    </div>
+
+                    <!-- Keyboard Quick Hint -->
+                    <div class="keyboard-hints-bar">
+                        <span><kbd>Space</kbd> / <kbd>N</kbd> More Dogs</span>
+                        <span><kbd>/</kbd> Filter Breed</span>
+                        <span><kbd>F</kbd> Favorites</span>
+                        <span><kbd>T</kbd> Dark Mode</span>
+                        <span><kbd>Esc</kbd> Close</span>
+                    </div>
+                </section>
+
+                <!-- Gallery Masonry Grid -->
+                <section class="gallery-section" aria-label="Dog Photo Gallery">
+                    <div class="image-container" id="image-container"></div>
+
+                    <!-- Skeletons Loader Placeholder -->
+                    <div class="gallery-skeleton-container" id="gallery-skeleton" aria-hidden="true">
+                        <div class="skeleton-dog-card">
+                            <div class="skeleton-img"></div>
+                        </div>
+                        <div class="skeleton-dog-card">
+                            <div class="skeleton-img"></div>
+                        </div>
+                        <div class="skeleton-dog-card">
+                            <div class="skeleton-img"></div>
+                        </div>
+                        <div class="skeleton-dog-card">
+                            <div class="skeleton-img"></div>
+                        </div>
+                    </div>
+
+                    <!-- Loader & Trigger for Infinite Scroll -->
+                    <div class="loader-container" id="loader">
+                        <div class="loader-spinner">
+                            <i class="fa-solid fa-paw fa-spin fa-2xl"></i>
+                        </div>
+                        <p class="loader-text">Fetching more furry friends...</p>
+                    </div>
+
+                    <!-- End of results / Manual Load trigger -->
+                    <div id="manual-load-more" class="manual-load-container" style="display: none;">
+                        <button type="button" id="btn-manual-more" class="btn-primary btn-lg">
+                            <i class="fa-solid fa-paw"></i> Load More Dogs
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Fullscreen Dog Lightbox Modal -->
+        <div id="modal-lightbox" class="modal-backdrop modal-lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="lightbox-breed-title">
+            <div class="lightbox-card">
+                <button class="btn-modal-close lightbox-close" id="btn-close-lightbox" aria-label="Close lightbox">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+                <button class="lightbox-nav-btn lightbox-prev" id="btn-lightbox-prev" aria-label="Previous dog picture" title="Previous (←)">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+
+                <div class="lightbox-media">
+                    <img id="lightbox-img" src="" alt="Full view dog photo">
+                    <div class="lightbox-loader" id="lightbox-loader">
+                        <i class="fa-solid fa-paw fa-spin fa-2xl"></i>
+                    </div>
+                </div>
+
+                <button class="lightbox-nav-btn lightbox-next" id="btn-lightbox-next" aria-label="Next dog picture" title="Next (→)">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+
+                <div class="lightbox-toolbar">
+                    <div class="lightbox-info">
+                        <span class="badge badge-category" id="lightbox-breed-badge"><i class="fa-solid fa-paw"></i> <span id="lightbox-breed-title">Dog</span></span>
+                        <span class="badge badge-counter" id="lightbox-counter">1 / 1</span>
+                    </div>
+
+                    <div class="lightbox-actions">
+                        <button id="btn-lightbox-fav" class="btn-action" title="Save to favorites (F)" aria-label="Favorite dog">
+                            <i class="fa-regular fa-heart" id="icon-lightbox-fav"></i>
+                            <span id="label-lightbox-fav">Favorite</span>
+                        </button>
+                        <button id="btn-lightbox-copy" class="btn-action" title="Copy photo link (C)" aria-label="Copy photo link">
+                            <i class="fa-regular fa-copy"></i>
+                            <span>Copy Link</span>
+                        </button>
+                        <button id="btn-lightbox-download" class="btn-action" title="Download dog photo" aria-label="Download image">
+                            <i class="fa-solid fa-download"></i>
+                            <span>Download</span>
+                        </button>
+                        <button id="btn-lightbox-share" class="btn-action btn-share" title="Share dog photo" aria-label="Share photo">
+                            <i class="fa-solid fa-share-nodes"></i>
+                            <span>Share</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-    </nav>
 
-    <div>
-        <!-- Image container -->
-        <div class="image-container" id="image-container"></div>
-
-        <!-- Loader -->
-        <div class="loader" id="loader">
-            <img src="/img/loader.svg" alt="Loading">
+        <!-- Favorites Modal / Drawer -->
+        <div id="modal-favorites" class="modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="favorites-title">
+            <div class="modal-card modal-favorites-card">
+                <div class="modal-header">
+                    <h2 id="favorites-title"><i class="fa-solid fa-bookmark"></i> Saved Favorite Dogs</h2>
+                    <button class="btn-modal-close" id="btn-close-favorites" aria-label="Close modal">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="modal-body" id="favorites-list-container">
+                    <p class="empty-state-text">No favorite dogs saved yet. Click the ❤️ button on any photo to save your favorite buddies!</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn-clear-all-favorites" class="btn-danger-outline" style="display: none;">
+                        <i class="fa-solid fa-trash-can"></i> Clear All Favorites
+                    </button>
+                    <button class="btn-secondary" id="btn-close-favorites-alt">Close</button>
+                </div>
+            </div>
         </div>
+
+        <!-- Shortcuts Modal -->
+        <div id="modal-shortcuts" class="modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="shortcuts-title">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <h2 id="shortcuts-title"><i class="fa-solid fa-keyboard"></i> Keyboard Shortcuts</h2>
+                    <button class="btn-modal-close" id="btn-close-shortcuts" aria-label="Close modal">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="shortcuts-table">
+                        <thead>
+                            <tr>
+                                <th>Shortcut</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><kbd>Space</kbd> or <kbd>N</kbd></td>
+                                <td>Fetch more dog pictures</td>
+                            </tr>
+                            <tr>
+                                <td><kbd>/</kbd></td>
+                                <td>Focus breed search / filter input</td>
+                            </tr>
+                            <tr>
+                                <td><kbd>→</kbd> / <kbd>←</kbd></td>
+                                <td>Next / Previous photo in Lightbox view</td>
+                            </tr>
+                            <tr>
+                                <td><kbd>C</kbd></td>
+                                <td>Copy active photo URL to clipboard</td>
+                            </tr>
+                            <tr>
+                                <td><kbd>F</kbd></td>
+                                <td>Toggle Favorite or open Favorites drawer</td>
+                            </tr>
+                            <tr>
+                                <td><kbd>T</kbd></td>
+                                <td>Toggle Dark / Light theme mode</td>
+                            </tr>
+                            <tr>
+                                <td><kbd>Esc</kbd></td>
+                                <td>Close Lightbox or open modals / Clear search</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-primary" id="btn-close-shortcuts-alt">Got it</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Scroll to Top Button -->
+        <button id="btn-scroll-top" class="btn-scroll-top" title="Scroll to top" aria-label="Scroll to top">
+            <i class="fa-solid fa-arrow-up"></i>
+        </button>
+
+        <!-- Floating Toast Container -->
+        <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="https://github.com/guinuxbr/infinite-dogs" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
+                    <i class="fa-brands fa-github"></i>
+                </a>
+                <a href="https://x.com/guinuxbr" target="_blank" rel="noopener noreferrer" aria-label="X Profile">
+                    <i class="fa-brands fa-x-twitter"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/gllmarques/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                </a>
+                <a href="https://www.instagram.com/guinuxbr" target="_blank" rel="noopener noreferrer" aria-label="Instagram Profile">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+            </div>
+            <p class="footer-credits">
+                Crafted with 🐶 by <a href="https://guinuxbr.com" target="_blank" rel="noopener noreferrer">GuinuxBR</a> • 
+                Powered by <a href="https://dog.ceo/dog-api/" target="_blank" rel="noopener noreferrer">Dog API</a>
+            </p>
+            <p class="footer-disclaimer">
+                <strong>Disclaimer:</strong> Dog photographs are provided via the public Dog CEO API. All dog photos belong to their respective good boys and girls. For entertainment and educational purposes.
+            </p>
+        </footer>
     </div>
-    <!-- Script -->
+
+    <!-- Scripts -->
     <script src="js/script.js"></script>
 </body>
 
